@@ -36,18 +36,9 @@ Future<void> _login() async {
       Navigator.pushReplacementNamed(context, '/home');
     }
     } catch (e) {
-    // if (e.toString().contains("CookieManagerSaveException")) {
-    //    print("Caught the space error! Manually navigating now...");
-       
-    //    // Even though it crashed saving, the login actually worked.
-    //    // We can force navigate to home.
-    //    if (!mounted) return;
-    //    Navigator.pushReplacementNamed(context, '/home');
-    // } else {
-    //    ScaffoldMessenger.of(context).showSnackBar(
-    //      const SnackBar(content: Text("Login Failed")),
-    //    );
-    // }
+       ScaffoldMessenger.of(context).showSnackBar(
+         const SnackBar(content: Text("Login Failed")),
+       );
   } finally {
     if (mounted) setState(() => _isLoading = false);
   }
@@ -76,8 +67,10 @@ Future<void> _login() async {
                   controller: _usernameController,
                   decoration: const InputDecoration(
                     labelText: "Username",
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                     prefixIcon: Icon(Icons.person),
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 245, 245, 245)
                   ),
                   validator: (value) => value!.isEmpty ? "Enter your username" : null,
                 ),
@@ -89,8 +82,10 @@ Future<void> _login() async {
                   obscureText: true, // Hides the characters
                   decoration: const InputDecoration(
                     labelText: "Password",
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                     prefixIcon: Icon(Icons.lock),
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 245, 245, 245)
                   ),
                   validator: (value) => value!.length < 6 ? "Password too short" : null,
                 ),
@@ -108,6 +103,23 @@ Future<void> _login() async {
                       : const Text("Login", style: TextStyle(color: Colors.white, fontSize: 18)),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Don't have an Account? ",style: TextStyle(fontStyle: FontStyle.italic),),
+                  TextButton(
+                    onPressed: () {Navigator.pushReplacementNamed(context, '/register');}, 
+                    
+                    child: Text("Register", 
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline
+                      ),
+                    )
+                  )
+                ],
+              )
               ],
             ),
           ),

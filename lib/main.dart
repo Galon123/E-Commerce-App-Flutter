@@ -29,7 +29,7 @@ class MarketplaceApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      initialRoute: isLoggedIn ? '/home' : '/login',
+      initialRoute: isLoggedIn? '/home' :'/login',
       routes: {
         '/register' : (context) => const RegisterScreen(),
         '/login' : (context) => const LoginScreen(),
