@@ -109,7 +109,11 @@ Future<void> _login() async {
                   Text("Don't have an Account? ",style: TextStyle(fontStyle: FontStyle.italic),),
                   TextButton(
                     onPressed: () {Navigator.pushReplacementNamed(context, '/register');}, 
-                    
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(0, 0),
+                      tapTargetSize: MaterialTapTargetSize.padded
+                    ),
                     child: Text("Register", 
                       style: TextStyle(
                         color: Colors.blue,

@@ -61,21 +61,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 210, 245, 245),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+            margin: const EdgeInsets.symmetric(vertical: 35),
             padding: const EdgeInsets.all(24.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18), 
-              color: Colors.white,
-              border: Border.all(width: 1),
-            ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.account_circle, size: 50, color: Colors.indigo),
-              Padding(padding: EdgeInsetsGeometry.only(top:20),child: Text("Create Account",style: TextStyle(fontSize: 24 ),),),
+              const Icon(Icons.account_circle, size: 70, color: Colors.indigo),
+              Padding(padding: EdgeInsetsGeometry.only(top:20),child: Text("Create Account",style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo)),),
               Expanded(
                 child: ListView(
                   children: [
@@ -173,21 +168,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
               ),
+              SizedBox(height: 10,),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo,),
                   onPressed: _isLoading ? null : _handleRegister,
-                  child: _isLoading ? CircularProgressIndicator() : const Text("Register",style: TextStyle(color: Colors.white),)),
+                  child: _isLoading ? CircularProgressIndicator() : const Text("Register",style: TextStyle(color: Colors.white, fontSize: 18),)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 50,),
                   Text("Already have an Account? ",style: TextStyle(fontStyle: FontStyle.italic),),
                   TextButton(
                     onPressed: () {Navigator.pushReplacementNamed(context, '/login');}, 
-                    
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(0, 0),
+                      tapTargetSize: MaterialTapTargetSize.padded
+                    ),
                     child: Text("Log in", 
                       style: TextStyle(
                         color: Colors.blue,
