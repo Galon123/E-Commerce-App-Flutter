@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/services/api_client.dart';
+import 'package:e_commerce_app/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -55,7 +56,7 @@ class _FeedScreenState extends State<FeedScreen> {
           return GridView.builder(
             padding: EdgeInsets.all(12.0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: 1,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               childAspectRatio: 0.75
@@ -75,6 +76,11 @@ class _FeedScreenState extends State<FeedScreen> {
 
 
   Widget _buildProductCard(Product product){
+    String imageUrl = product.img_url;
+    if (imageUrl.contains('127.0.0.1') || imageUrl.contains('localhost')) {
+      imageUrl = imageUrl.replaceAll('127.0.0.1', '192.168.1.12'); 
+    }
+
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +99,8 @@ class _FeedScreenState extends State<FeedScreen> {
                 Text("Rs.${product.price}")
               ],
             ),
-          )
+          ),
+          Container(child: Center(child: Image.network(imageUrl, fit: BoxFit.fill,)))
         ],
       ),
     );
