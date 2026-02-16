@@ -34,13 +34,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try{
 
         final regRequest = await ApiClient.dio.post('/register',
-        data: FormData.fromMap({
+        data: {
           "username" : _usernameController.text.trim(),
           "email" : _emailController.text,
           "phone_no" : _phoneNoController.text,
           "password" : _passwordController.text,
           "confirm_password" : _confirmPasswordController.text,
-          })
+          }
         ); 
 
         if(regRequest.statusCode == 201 || regRequest.statusCode == 200){
@@ -49,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     catch(e){
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: const Text("Register Failed"))
+        const SnackBar(content: Text("Register Failed"))
       );
     }
     finally{
@@ -91,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: (value) {
                               if(value == null || value.isEmpty) return "Required";
                               if(value.length < 3) return "Too short";
-                              if(!value.startsWith(RegExp('r[A-Z]'))) return "Username must start with A-Z";
+                              if(!value.startsWith(RegExp(r'[A-Z]'))) return "Username must start with A-Z";
                               else return null;
                             }
                           ),

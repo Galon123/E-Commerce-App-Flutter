@@ -28,9 +28,6 @@ class _MainNavigationHubState extends State<MainNavigationHub> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
       bottomNavigationBar: MyBottomNavBar(
         onTabChange:(index)=> navigateBottomBar(index)
       ),

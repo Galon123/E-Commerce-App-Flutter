@@ -19,7 +19,7 @@ class MyBottomNavBar extends StatelessWidget {
         tabs: const [
           GButton(
             icon: Icons.home,
-            text: 'Feed',
+            text: 'Home',
           ),
           GButton(
             icon: Icons.person_2_outlined,
