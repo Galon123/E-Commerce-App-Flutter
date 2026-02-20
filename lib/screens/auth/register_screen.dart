@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ); 
 
         if(regRequest.statusCode == 201 || regRequest.statusCode == 200){
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, '/login');
         }
       }
     catch(e){

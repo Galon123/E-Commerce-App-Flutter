@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:e_commerce_app/screens/auth/register_screen.dart';
 import 'package:e_commerce_app/screens/feed/feed_screen.dart';
 import 'package:e_commerce_app/screens/profile/profile_screen.dart';
@@ -28,8 +30,18 @@ class _MainNavigationHubState extends State<MainNavigationHub> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: MyBottomNavBar(
-        onTabChange:(index)=> navigateBottomBar(index)
+      extendBody: true,
+      bottomNavigationBar: Padding(
+        padding: EdgeInsetsGeometry.symmetric(vertical: 15, horizontal: 5),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(60),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: MyBottomNavBar(
+                  onTabChange:(index)=> navigateBottomBar(index)
+                ),
+          ),
+        ),
       ),
       body: _screens[_currentIndex],
     );

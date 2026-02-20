@@ -3,7 +3,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:path_provider/path_provider.dart';
 
-const BASE_URL = "http://10.175.149.47:8000";
+const BASE_URL = "http://192.168.1.12:8000";
 
 class ApiClient {
 
