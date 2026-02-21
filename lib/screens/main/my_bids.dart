@@ -124,10 +124,12 @@ class _MyBidsState extends State<MyBids> {
   }
 
 
-  Widget _buildBidCard(Bid bid){
-    
 
-    return(Card());
+  Widget _buildBidCard(Bid bid){
+    return(
+      Card(
+      )
+    );
   }
 
 }

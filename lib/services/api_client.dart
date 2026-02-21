@@ -48,27 +48,41 @@ class ApiClient {
 
     
 
-    _dio.interceptors.add(InterceptorsWrapper(
-      onError: (DioException e, handler) async{
-        if(e.response?.statusCode == 401){
-          try{
+_dio.interceptors.add(InterceptorsWrapper(
+  onError: (DioException e, handler) async {
+    if (e.response?.statusCode == 401 && e.response?.data['detail'] == "Token Expires") {
+      try {
+        // 1. Create a clean Dio instance
+        final refreshDio = Dio(BaseOptions(baseUrl: _dio.options.baseUrl));
+        
+        // 2. Attach the same CookieJar to this temporary Dio
+        // This ensures the refresh cookie is sent!
+        refreshDio.interceptors.add(CookieManager(_cookieJar)); 
 
-            final refreshDio = Dio(BaseOptions(baseUrl: _dio.options.baseUrl));
+        // 3. Make the call (Cookies are sent automatically)
+        final refreshResponse = await refreshDio.post('/refresh');
 
-            await refreshDio.post('/refresh');
+        if (refreshResponse.statusCode == 200) {
+          // 4. Get the NEW access token from the JSON body
+          final newAccessToken = refreshResponse.data['access_token'];
 
-            final response = await _dio.fetch(e.requestOptions);
+          // 5. Update your global headers
+          _dio.options.headers["Authorization"] = "Bearer $newAccessToken";
 
-            return handler.resolve(response);
-          }
-          catch(refreshError){
-            print("Error Refreshing token...");
-          }
+          // 6. Update the failed request and retry
+          e.requestOptions.headers["Authorization"] = "Bearer $newAccessToken";
+          final response = await _dio.fetch(e.requestOptions);
+          
+          return handler.resolve(response);
         }
-        return handler.next(e);
+      } catch (refreshError) {
+        debugPrint("Refresh failed: $refreshError");
+        // Token is truly dead, time to log out
       }
-    )
-    );
+    }
+    return handler.next(e);
+  },
+));
 
     _dio.interceptors.add(CookieManager(_cookieJar));
 
@@ -83,6 +97,7 @@ class ApiClient {
     return cookies.isNotEmpty;
 
   }
+
 
 
   static void addInterceptor(String token) {
