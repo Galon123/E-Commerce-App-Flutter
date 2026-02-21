@@ -8,19 +8,27 @@ class MyBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.transparent,borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(60), border: Border.all(width: 2)),
       child: GNav(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         color: Colors.blueGrey,
-        activeColor: Colors.white,
+        activeColor: Colors.indigo,
         tabActiveBorder: Border.all(color: Colors.white),
-        tabBackgroundColor: const Color.fromARGB(125, 0, 0, 0),
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        tabBackgroundColor: Colors.grey.shade200,
         tabBorderRadius: 40,
         onTabChange: (value) => onTabChange!(value),
         tabs: const [
           GButton(
             icon: Icons.home,
             text: 'Home',
+          ),
+          GButton(
+            icon: Icons.monetization_on_sharp,
+            text: 'My Bids ',
+          ),
+          GButton(
+            icon: Icons.list,
+            text: 'My Listings',
           ),
           GButton(
             icon: Icons.person_2_outlined,

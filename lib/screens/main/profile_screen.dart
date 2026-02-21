@@ -8,10 +8,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  String username = "";
+
+  Future <void> _fetchuser() async{
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("Hello, this is profile"),
     );
   }
 }

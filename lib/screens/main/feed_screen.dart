@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/models/product.dart';
+import 'package:e_commerce_app/screens/extras/item_detail.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
 
@@ -72,7 +73,7 @@ class _FeedScreenState extends State<FeedScreen> {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(title: const Text("Feed",style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),),
+    appBar: AppBar(title: const Text("Feed",style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),),
     body: CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -148,47 +149,56 @@ Widget build(BuildContext context) {
                 decoration: BoxDecoration(border: Border.all(color: Colors.grey, width: 1), borderRadius: BorderRadius.circular(15)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.network(imageUrl, fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                    Container(color: Colors.grey[200], child: const Icon(Icons.image_not_supported),)
-                 )
+                    child: Image.network(imageUrl, fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                        Container(color: Colors.grey[200], child: const Icon(Icons.image_not_supported),)
+                    ),
                 )
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.title,
-                      style: TextStyle(
-                      fontWeight: FontWeight.bold, 
-                      fontSize: 25,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.person_2_outlined),
-                      Text(
-                        'By ${product.sellerName}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15
+            GestureDetector(
+              onTap: () =>{
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => ItemDetail(product: product))
+                )
+              },
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child:Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          product.title,
+                            style: TextStyle(
+                            fontWeight: FontWeight.bold, 
+                            fontSize: 25,
+                          ),
                         ),
-                      )
-                    ],
-                  ),
-                  Text(
-                    "₹${product.price}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 18,
-                      fontStyle: FontStyle.italic,
-                      color: Colors.green.shade600
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.person_2_outlined),
+                            Text(
+                              'By ${product.sellerName}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15
+                              ),
+                            )
+                          ],
+                        ),
+                        Text(
+                          "₹${product.price}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.green.shade600
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
               ),
             )
           ],

@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:e_commerce_app/screens/auth/register_screen.dart';
-import 'package:e_commerce_app/screens/feed/feed_screen.dart';
-import 'package:e_commerce_app/screens/profile/profile_screen.dart';
+import 'package:e_commerce_app/screens/extras/create_listing.dart';
+import 'package:e_commerce_app/screens/main/feed_screen.dart';
+import 'package:e_commerce_app/screens/main/my_bids.dart';
+import 'package:e_commerce_app/screens/main/my_listings.dart';
+import 'package:e_commerce_app/screens/main/profile_screen.dart';
 import 'package:e_commerce_app/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +27,8 @@ class _MainNavigationHubState extends State<MainNavigationHub> {
 
   final List<Widget> _screens =[
     const FeedScreen(),
+    const MyBids(),
+    const MyListings(),
     const ProfileScreen()
   ];
 
@@ -32,15 +37,11 @@ class _MainNavigationHubState extends State<MainNavigationHub> {
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: Padding(
-        padding: EdgeInsetsGeometry.symmetric(vertical: 15, horizontal: 5),
+        padding: EdgeInsetsGeometry.symmetric(vertical: 10,),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(60),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: MyBottomNavBar(
                   onTabChange:(index)=> navigateBottomBar(index)
                 ),
-          ),
         ),
       ),
       body: _screens[_currentIndex],

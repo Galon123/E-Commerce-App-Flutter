@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/screens/auth/login_screen.dart';
 import 'package:e_commerce_app/screens/auth/register_screen.dart';
+import 'package:e_commerce_app/screens/extras/item_detail.dart';
 import 'package:e_commerce_app/screens/main_hub.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class MarketplaceApp extends StatelessWidget {
       routes: {
         '/register' : (context) => const RegisterScreen(),
         '/login' : (context) => const LoginScreen(),
-        '/home' : (context) => const MainNavigationHub()
+        '/home' : (context) => const MainNavigationHub(),
       },
     );
   }
