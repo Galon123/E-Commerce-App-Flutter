@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 
 const BASE_URL = "http://192.168.1.12:8000";
@@ -45,6 +46,8 @@ class ApiClient {
       ),
     );
 
+    
+
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException e, handler) async{
         if(e.response?.statusCode == 401){
@@ -81,7 +84,28 @@ class ApiClient {
 
   }
 
+
+  static void addInterceptor(String token) {
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          options.headers["Authorization"] = "Bearer $token";
+          return handler.next(options);
+        },
+        onError: (DioException e, handler) {
+          if (e.response?.statusCode == 401) {
+            debugPrint("Token expired! Redirecting to login...");
+          }
+          return handler.next(e);
+        },
+      ),
+    );
+  }
+
   //Getter 
   static Dio get dio => _dio;
 
+
+
 }
+
