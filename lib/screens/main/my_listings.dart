@@ -5,6 +5,13 @@ class MyListings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(title: const Text("My Listings", style: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ),
+    );
   }
 }
