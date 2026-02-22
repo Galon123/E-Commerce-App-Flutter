@@ -72,6 +72,7 @@ class _MyBidsState extends State<MyBids> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

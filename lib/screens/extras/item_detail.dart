@@ -1,10 +1,105 @@
 import 'package:e_commerce_app/models/product.dart';
+import 'package:e_commerce_app/screens/extras/create_bid.dart';
+import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
 
 class ItemDetail extends StatelessWidget {
   final Product product;
   const ItemDetail({super.key, required this.product});
 
+  void _showBidSheet(BuildContext context, int itemId, double minPrice) {
+    final TextEditingController _bidController = TextEditingController();
+    String? errorMessage; // To hold our validation message
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => StatefulBuilder( // Allows the sheet to update itself
+        builder: (context, setSheetState) => Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+            left: 20, right: 20, top: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Place Your Bid (Min: ₹$minPrice)",
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                controller: _bidController,
+                keyboardType: TextInputType.number,
+                autofocus: true,
+                decoration: InputDecoration(
+                  prefixText: "₹ ",
+                  labelText: "Your Bid Amount",
+                  errorText: errorMessage, // Displays the error red text
+                  border: const OutlineInputBorder(),
+                ),
+                onChanged: (val) {
+                  // Clear error as user types
+                  if (errorMessage != null) {
+                    setSheetState(() => errorMessage = null);
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
+                  onPressed: () {
+                    final double? enteredAmount = double.tryParse(_bidController.text);
+                    
+                    // Validation Logic
+                    if (enteredAmount == null) {
+                      setSheetState(() => errorMessage = "Please enter a valid number");
+                    } else if (enteredAmount < minPrice) {
+                      setSheetState(() => errorMessage = "Bid must be at least ₹$minPrice");
+                    } else {
+                      _placeBid(context, itemId, enteredAmount);
+                    }
+                  },
+                  child: const Text("Confirm Bid", style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _placeBid(BuildContext context, int itemId, double amount) async {
+    try {
+      final response = await ApiClient.dio.post("/bids/create", data: {
+        "item_id": itemId,
+        "bid_price": amount,
+      });
+
+      if (response.statusCode == 200) {
+        Navigator.pop(context); // Close sheet
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Bid of ₹$amount placed successfully!"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      // If backend returns a 400 (e.g., bid too low compared to others)
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Could not place bid. Try a higher amount.")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +109,7 @@ class ItemDetail extends StatelessWidget {
         child: Column(
           children: [
             Image.network(
-              product.img_url.replaceAll('127.0.0.1', '192.168.1.12'),
+              product.img_url.replaceAll('127.0.0.1', BASE_URL.replaceAll('http://', '').replaceAll(':8000', '')),
               width: double.infinity,
               height: 300,
               fit: BoxFit.cover,
@@ -80,7 +175,7 @@ class ItemDetail extends StatelessWidget {
               backgroundColor: WidgetStateProperty.all(Colors.greenAccent.shade400),
               textStyle: WidgetStateProperty.all(TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))
             ),
-            onPressed: () {},
+            onPressed: () => _showBidSheet(context, product.id, product.price),
             child: const Text("Place Bid"),
           ),
         ),
