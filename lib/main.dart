@@ -1,9 +1,11 @@
+import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/screens/auth/login_screen.dart';
 import 'package:e_commerce_app/screens/auth/register_screen.dart';
 import 'package:e_commerce_app/screens/extras/item_detail.dart';
 import 'package:e_commerce_app/screens/main_hub.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async{
   
@@ -14,7 +16,14 @@ void main() async{
   bool sessionExists = await ApiClient.hasValidSession();
 
   
-  runApp(MarketplaceApp(isLoggedIn: sessionExists));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider())
+      ],
+      child: MarketplaceApp(isLoggedIn: sessionExists),
+    )
+  );
 }
 
 class MarketplaceApp extends StatelessWidget {

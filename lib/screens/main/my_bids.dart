@@ -34,7 +34,6 @@ class _MyBidsState extends State<MyBids> {
     });
   }
 
-  
 
 
   Future <void> _fetchMyBids() async{

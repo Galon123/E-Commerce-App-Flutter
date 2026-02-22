@@ -5,7 +5,6 @@ class ItemDetail extends StatelessWidget {
   final Product product;
   const ItemDetail({super.key, required this.product});
 
-  final bool isSameUser = true;
 
   @override
   Widget build(BuildContext context) {
@@ -75,17 +74,7 @@ class ItemDetail extends StatelessWidget {
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 16)],
         ),
         child:Expanded(
-          child: isSameUser ?
-          ElevatedButton(
-            style: ButtonStyle(
-              padding: WidgetStateProperty.all(EdgeInsetsGeometry.all(20)),
-              backgroundColor: WidgetStateProperty.all(Colors.greenAccent.shade100),
-              textStyle: WidgetStateProperty.all(TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))
-            ),
-            onPressed: () {},
-            child: const Text("Cannot place Bid on own Item"),
-          ):
-          ElevatedButton(
+          child:ElevatedButton(
             style: ButtonStyle(
               padding: WidgetStateProperty.all(EdgeInsetsGeometry.all(20)),
               backgroundColor: WidgetStateProperty.all(Colors.greenAccent.shade400),

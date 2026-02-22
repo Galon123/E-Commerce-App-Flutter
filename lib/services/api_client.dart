@@ -85,10 +85,6 @@ class ApiClient {
     return cookies.isNotEmpty;
   }
 
-  // Function to set initial token after a fresh Login
-  static void setToken(String token) {
-    _dio.options.headers["Authorization"] = "Bearer $token";
-  }
 
   static Dio get dio => _dio;
 }

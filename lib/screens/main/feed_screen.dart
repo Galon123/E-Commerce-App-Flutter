@@ -1,7 +1,9 @@
 import 'package:e_commerce_app/models/product.dart';
+import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/screens/extras/item_detail.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -20,11 +22,14 @@ class _FeedScreenState extends State<FeedScreen> {
   bool isLoading = false;
   bool hasMore = true;
 
+
+
   List<Product> allProducts =[];
 
   @override
   void initState(){
     super.initState();
+    Provider.of<UserProvider>(context, listen: false).refreshUsername();
     _fetchItems();
 
     _scrollController.addListener(() {
@@ -34,7 +39,6 @@ class _FeedScreenState extends State<FeedScreen> {
     });
   }
 
-  
 
   Future <void> _fetchItems() async{
 
@@ -56,6 +60,7 @@ class _FeedScreenState extends State<FeedScreen> {
       final List<dynamic> data = response.data;
 
       final List<Product> newItems = data.map((json) => Product.fromJson(json)).toList();
+
       
 
       setState(() {
@@ -73,6 +78,12 @@ class _FeedScreenState extends State<FeedScreen> {
 
 @override
 Widget build(BuildContext context) {
+  final userProvider = Provider.of<UserProvider>(context);
+
+  final String user = userProvider.username;
+
+  final filteredProducts = allProducts.where((item)=>item.sellerName != user).toList();
+
   return Scaffold(
     appBar: AppBar(title: const Text("Feed",style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),),
     body: CustomScrollView(
@@ -89,8 +100,8 @@ Widget build(BuildContext context) {
               mainAxisSpacing: 10,
             ),
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildProductCard(allProducts[index]),
-              childCount: allProducts.length,
+              (context, index) => _buildProductCard(filteredProducts[index]),
+              childCount: filteredProducts.length,
             ),
           ),
         ),
