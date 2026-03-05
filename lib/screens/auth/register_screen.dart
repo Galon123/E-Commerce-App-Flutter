@@ -91,8 +91,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: (value) {
                               if(value == null || value.isEmpty) return "Required";
                               if(value.length < 3) return "Too short";
-                              if(!value.startsWith(RegExp(r'[A-Z]'))) return "Username must start with A-Z";
-                              else return null;
+                              if(!value.startsWith(RegExp(r'[A-Z]'))) {
+                                return "Username must start with A-Z";
+                              } else {
+                                return null;
+                              }
                             }
                           ),
                           SizedBox(height: 25),
@@ -107,8 +110,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             validator: (value) {
                               if(value == null ||value.isEmpty) return "Required";
-                              if(!value.toLowerCase().endsWith("@gectcr.ac.in")) return "Must be a college ID";
-                              else return null;
+                              if(!value.toLowerCase().endsWith("@gectcr.ac.in")) {
+                                return "Must be a college ID";
+                              } else {
+                                return null;
+                              }
                             },
                           ),
                           SizedBox(height: 25),
@@ -124,8 +130,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             keyboardType: TextInputType.phone,
                             validator: (value) { 
                               if(value == null || value.isEmpty) return "Required";
-                              if(value.length !=10) return "Invalid Phone Number";
-                              else return null;
+                              if(value.length !=10) {
+                                return "Invalid Phone Number";
+                              } else {
+                                return null;
+                              }
                             },
                           ),
                           SizedBox(height: 25),
@@ -142,8 +151,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               if(value == null || value.isEmpty) return "Required";
                               if(!value.contains(RegExp(r'[A-Z]'))) return "One UpperCase Character required";
                               if(!value.contains(RegExp(r'[a-z]'))) return "One LowerCase Character required";
-                              if(!value.contains(RegExp(r'[0-9]'))) return "One Number required";
-                              else return null;
+                              if(!value.contains(RegExp(r'[0-9]'))) {
+                                return "One Number required";
+                              } else {
+                                return null;
+                              }
                             }
                           ),
                           SizedBox(height: 25),
@@ -158,8 +170,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             validator: (value) {
                               if(value == null || value.isEmpty) return "Required";
-                              if(value != _passwordController.text) return "Must be same as Password";
-                              else return null;
+                              if(value != _passwordController.text) {
+                                return "Must be same as Password";
+                              } else {
+                                return null;
+                              }
                             },
                           ),
                         ],

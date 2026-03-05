@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/models/product.dart';
-import 'package:e_commerce_app/screens/extras/create_bid.dart';
 import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,7 @@ class _ItemDetailState extends State<ItemDetail> {
   }
 
   void _showBidSheet(BuildContext context, int itemId, double minPrice) {
-    final TextEditingController _bidController = TextEditingController();
+    final TextEditingController bidController = TextEditingController();
     String? errorMessage; // To hold our validation message
 
     showModalBottomSheet(
@@ -46,7 +45,7 @@ class _ItemDetailState extends State<ItemDetail> {
               ),
               const SizedBox(height: 15),
               TextField(
-                controller: _bidController,
+                controller: bidController,
                 keyboardType: TextInputType.number,
                 autofocus: true,
                 decoration: InputDecoration(
@@ -69,7 +68,7 @@ class _ItemDetailState extends State<ItemDetail> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
                   onPressed: () {
-                    final double? enteredAmount = double.tryParse(_bidController.text);
+                    final double? enteredAmount = double.tryParse(bidController.text);
                     
                     // Validation Logic
                     if (enteredAmount == null) {
@@ -116,9 +115,9 @@ class _ItemDetailState extends State<ItemDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final user_name = Provider.of<UserProvider>(context).username;
+    final userName = Provider.of<UserProvider>(context).username;
     final product = widget.product;
-    final bool isOwner = product.sellerName == user_name;
+    final bool isOwner = product.sellerName == userName;
 
     return Scaffold(
       appBar: AppBar(title: Text("Item detail"),),
@@ -169,7 +168,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${widget.product.description}",
+                    widget.product.description,
                     style: TextStyle(color: Colors.grey[700], fontSize: 16),
                   ),
 

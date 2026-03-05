@@ -16,7 +16,7 @@ class _MyBidsState extends State<MyBids> {
   bool isLoading=false;
   bool _hasMore = true;
   int _skip = 0;
-  int _limit = 10;
+  final int _limit = 10;
 
 
   List<Bid> myBids=[];
@@ -43,7 +43,7 @@ class _MyBidsState extends State<MyBids> {
     setState(() => isLoading=true);
 
     try{
-      final response = await ApiClient.dio.get("/bids/mybids?skip=${_skip}&limit=${_limit}");
+      final response = await ApiClient.dio.get("/bids/mybids?skip=$_skip&limit=$_limit");
 
       if(response.statusCode == 404){
         setState(() {
@@ -129,7 +129,7 @@ class _MyBidsState extends State<MyBids> {
 
 
   Widget _buildBidCard(Bid bid){
-    return Container(
+    return SizedBox(
       height: 50,
       width: double.infinity, 
       child: (

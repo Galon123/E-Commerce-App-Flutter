@@ -1,7 +1,4 @@
-import 'dart:ui';
 
-import 'package:e_commerce_app/screens/auth/register_screen.dart';
-import 'package:e_commerce_app/screens/extras/create_listing.dart';
 import 'package:e_commerce_app/screens/main/feed_screen.dart';
 import 'package:e_commerce_app/screens/main/my_bids.dart';
 import 'package:e_commerce_app/screens/main/my_listings.dart';
