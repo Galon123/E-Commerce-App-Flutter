@@ -1,11 +1,24 @@
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/screens/extras/create_bid.dart';
+import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ItemDetail extends StatelessWidget {
+class ItemDetail extends StatefulWidget {
   final Product product;
   const ItemDetail({super.key, required this.product});
+
+  @override
+  State<ItemDetail> createState() => _ItemDetailState();
+}
+
+class _ItemDetailState extends State<ItemDetail> {
+  @override
+  void initState(){
+    super.initState();
+    Provider.of<UserProvider>(context, listen: false).refreshUsername();
+  }
 
   void _showBidSheet(BuildContext context, int itemId, double minPrice) {
     final TextEditingController _bidController = TextEditingController();
@@ -103,13 +116,17 @@ class ItemDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user_name = Provider.of<UserProvider>(context).username;
+    final product = widget.product;
+    final bool isOwner = product.sellerName == user_name;
+
     return Scaffold(
       appBar: AppBar(title: Text("Item detail"),),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Image.network(
-              product.img_url.replaceAll('127.0.0.1', BASE_URL.replaceAll('http://', '').replaceAll(':8000', '')),
+              widget.product.img_url.replaceAll('127.0.0.1', BASE_URL.replaceAll('http://', '').replaceAll(':8000', '')),
               width: double.infinity,
               height: 300,
               fit: BoxFit.cover,
@@ -120,7 +137,7 @@ class ItemDetail extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "₹${product.price}",
+                    "₹${widget.product.price}",
                     style: const TextStyle(
                       fontSize: 28, 
                       fontWeight: FontWeight.bold, 
@@ -129,7 +146,7 @@ class ItemDetail extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    product.title,
+                    widget.product.title,
                     style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                   ),
                   const Divider(height: 30),
@@ -139,7 +156,7 @@ class ItemDetail extends StatelessWidget {
                     children: [
                       const CircleAvatar(child: Icon(Icons.person)),
                       const SizedBox(width: 10),
-                      Text("Listed by ${product.sellerName}", 
+                      Text("Listed by ${widget.product.sellerName}", 
                            style: const TextStyle(fontSize: 16)),
                     ],
                   ),
@@ -152,7 +169,7 @@ class ItemDetail extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${product.description}",
+                    "${widget.product.description}",
                     style: TextStyle(color: Colors.grey[700], fontSize: 16),
                   ),
 
@@ -169,14 +186,24 @@ class ItemDetail extends StatelessWidget {
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 16)],
         ),
         child:Expanded(
-          child:ElevatedButton(
+          child:isOwner ? 
+          ElevatedButton(
+            style: ButtonStyle(
+              padding: WidgetStateProperty.all(EdgeInsetsGeometry.all(20)),
+              backgroundColor: WidgetStateProperty.all(Colors.grey.shade300),
+              textStyle: WidgetStateProperty.all(TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))
+            ),
+            onPressed: () => {},
+            child: const Text("Cannot Bid"),
+          ):
+          ElevatedButton(
             style: ButtonStyle(
               padding: WidgetStateProperty.all(EdgeInsetsGeometry.all(20)),
               backgroundColor: WidgetStateProperty.all(Colors.greenAccent.shade400),
               textStyle: WidgetStateProperty.all(TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))
             ),
-            onPressed: () => _showBidSheet(context, product.id, product.price),
-            child: const Text("Place Bid"),
+            onPressed: () => _showBidSheet(context, widget.product.id, widget.product.price),
+            child:Text("Place Bid"),
           ),
         ),
       ),

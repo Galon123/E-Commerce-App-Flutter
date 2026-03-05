@@ -1,9 +1,8 @@
 import 'package:e_commerce_app/models/product.dart';
-import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/screens/extras/item_detail.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -21,7 +20,7 @@ class _FeedScreenState extends State<FeedScreen> {
   final int _limit = 10;
   bool isLoading = false;
   bool hasMore = true;
-
+  bool isSameUser = false;
 
 
   List<Product> allProducts =[];
@@ -29,9 +28,7 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   void initState(){
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).refreshUsername();
     _fetchItems();
-
     _scrollController.addListener(() {
       if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200){
         _fetchItems();
@@ -78,54 +75,51 @@ class _FeedScreenState extends State<FeedScreen> {
 
 @override
 Widget build(BuildContext context) {
-  final userProvider = Provider.of<UserProvider>(context);
-
-  final String user = userProvider.username;
-
-  final filteredProducts = allProducts.where((item)=>item.sellerName != user).toList();
-
   return Scaffold(
-    appBar: AppBar(title: const Text("Feed",style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),),
-    body: CustomScrollView(
-      controller: _scrollController,
-      slivers: [
-        // The Grid part
-        SliverPadding(
-          padding: const EdgeInsets.all(12.0),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              childAspectRatio: 0.72,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildProductCard(filteredProducts[index]),
-              childCount: filteredProducts.length,
+    appBar: AppBar(title: const Text("Feed",style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),backgroundColor: Color(0XF0E6D3DD),),
+    body: Container(
+      color: Color(0XF0E6D3DD),
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          // The Grid part
+          SliverPadding(
+            padding: const EdgeInsets.all(12.0),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                childAspectRatio: 0.72,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => _buildProductCard(allProducts[index],),
+                childCount: allProducts.length,
+              ),
             ),
           ),
-        ),
-    
-        // The Bottom UI part (Loader OR "Caught up" message)
-        SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            alignment: Alignment.center,
-            child: hasMore
-                ? const CircularProgressIndicator() // Still loading
-                : const Column(
-                    children: [
-                      Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
-                      SizedBox(height: 8),
-                      Text(
-                        "You're all caught up!",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-                      ),
-                    ],
-                  ),
+      
+          // The Bottom UI part (Loader OR "Caught up" message)
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              alignment: Alignment.center,
+              child: hasMore
+                  ? const CircularProgressIndicator() // Still loading
+                  : const Column(
+                      children: [
+                        Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
+                        SizedBox(height: 8),
+                        Text(
+                          "You're all caught up!",
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
     extendBody: true,
   );
@@ -133,6 +127,7 @@ Widget build(BuildContext context) {
 
 
   Widget _buildProductCard(Product product){
+
     String imageUrl = product.img_url;
     if (imageUrl.contains('127.0.0.1') || imageUrl.contains('localhost')) {
       imageUrl = imageUrl.replaceAll('http://127.0.0.1:8000', BASE_URL); 
@@ -172,7 +167,7 @@ Widget build(BuildContext context) {
               onTap: () =>{
                 Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => ItemDetail(product: product))
+                  MaterialPageRoute(builder: (context) => ItemDetail(product: product,))
                 )
               },
               child: Padding(
