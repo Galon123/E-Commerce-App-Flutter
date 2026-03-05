@@ -76,9 +76,9 @@ class _FeedScreenState extends State<FeedScreen> {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(title: const Text("Feed",style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),backgroundColor: Color(0XF0E6D3DD),),
+    appBar: AppBar(title: const Text("Feed",style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),backgroundColor: const Color.fromARGB(198, 230, 216, 141),),
     body: Container(
-      color: Color(0XF0E6D3DD),
+      color: Colors.amberAccent.shade100,
       child: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -134,7 +134,7 @@ Widget build(BuildContext context) {
     }
 
     return Card(
-      color: Colors.blue.shade100,
+      color: Colors.orange.shade100,
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),

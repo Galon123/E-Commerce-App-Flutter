@@ -82,43 +82,46 @@ class _MyBidsState extends State<MyBids> {
           ),
         ),
       ),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverPadding(
-            padding: EdgeInsets.all(8.0),
-            sliver: SliverGrid(
-              delegate:SliverChildBuilderDelegate(
-                (context,index) => _buildBidCard(myBids[index]),
-                childCount: myBids.length
-              ), 
-              gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 1.44,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10
-              )
+      body: Container(
+        color: Colors.amberAccent.shade100,
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.all(8.0),
+              sliver: SliverGrid(
+                delegate:SliverChildBuilderDelegate(
+                  (context,index) => _buildBidCard(myBids[index]),
+                  childCount: myBids.length
+                ), 
+                gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  childAspectRatio: 1.44,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10
+                )
+              ),
+            ),
+            SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              alignment: Alignment.center,
+              child: _hasMore
+                  ? const CircularProgressIndicator() // Still loading
+                  : const Column(
+                      children: [
+                        Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
+                        SizedBox(height: 8),
+                        Text(
+                          "You're all caught up!",
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                        ),
+                      ],
+                    ),
             ),
           ),
-          SliverToBoxAdapter(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            alignment: Alignment.center,
-            child: _hasMore
-                ? const CircularProgressIndicator() // Still loading
-                : const Column(
-                    children: [
-                      Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
-                      SizedBox(height: 8),
-                      Text(
-                        "You're all caught up!",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-          ),
+          ],
         ),
-        ],
       )
     );
   }
@@ -126,9 +129,51 @@ class _MyBidsState extends State<MyBids> {
 
 
   Widget _buildBidCard(Bid bid){
-    return(
-      Card(
-      )
+    return Container(
+      height: 50,
+      width: double.infinity, 
+      child: (
+        Card(
+          color: Colors.orange.shade100,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(15),
+          side: BorderSide(
+            color: Colors.black,
+            width: 2
+          )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text('Bid Status : ${bid.status}',style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  
+                ),),
+                Text('Your Bid Price : Rs.${bid.bidPrice}',style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  
+                ),),
+                Row(
+                  children: [
+                    Text('Seller Rating : ${bid.rating}',style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  
+                ),),
+                    Icon(Icons.star)
+                  ],
+                )
+              ],
+            ),
+          ),
+        )
+      ),
     );
   }
 
