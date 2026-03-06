@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/assets/constants.dart';
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/screens/extras/item_detail.dart';
@@ -40,10 +41,10 @@ class _FeedScreenState extends State<FeedScreen> {
     final provider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      backgroundColor: Colors.amberAccent.shade100,
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: const Text("Feed", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-        backgroundColor: const Color.fromARGB(198, 230, 216, 141),
+        backgroundColor: AppColors.primaryColor,
       ),
       body: RefreshIndicator(
         onRefresh: () async{ await provider.refreshFeed(); },
@@ -97,7 +98,7 @@ class _FeedScreenState extends State<FeedScreen> {
     }
 
     return Card(
-      color: Colors.orange.shade100,
+      color: const Color(0xFFD1C066),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),

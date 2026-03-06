@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/assets/constants.dart';
 import 'package:e_commerce_app/models/bid.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
@@ -78,12 +79,13 @@ class _MyBidsState extends State<MyBids> {
     return Scaffold(
       appBar: AppBar(title: const Text("My Bids", style: TextStyle(
             fontSize: 40,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
           ),
         ),
+        backgroundColor: AppColors.primaryColor,
       ),
       body: Container(
-        color: Colors.amberAccent.shade100,
+        color: AppColors.backgroundColor,
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
@@ -134,7 +136,7 @@ class _MyBidsState extends State<MyBids> {
       width: double.infinity, 
       child: (
         Card(
-          color: Colors.orange.shade100,
+          color: AppColors.secondaryColor,
           elevation: 4,
           shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
