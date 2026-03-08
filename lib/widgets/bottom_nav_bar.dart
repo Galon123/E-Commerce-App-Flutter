@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/assets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -8,13 +9,13 @@ class MyBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(60), border: Border.all(width: 2)),
+      decoration: BoxDecoration(color: AppColors.secondaryColor, borderRadius: BorderRadius.circular(60), border: Border.all(width: 2)),
       child: GNav(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        color: Colors.blueGrey,
-        activeColor: Colors.indigo,
+        color: Colors.lightGreen,
+        activeColor: Colors.greenAccent,
         tabActiveBorder: Border.all(color: Colors.white),
-        tabBackgroundColor: Colors.grey.shade200,
+        tabBackgroundColor: Colors.deepPurple.shade400,
         tabBorderRadius: 40,
         onTabChange: (value) => onTabChange!(value),
         tabs: const [

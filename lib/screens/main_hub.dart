@@ -34,7 +34,7 @@ class _MainNavigationHubState extends State<MainNavigationHub> {
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: Padding(
-        padding: EdgeInsetsGeometry.symmetric(vertical: 10,),
+        padding: EdgeInsetsGeometry.symmetric(vertical: 40,horizontal: 5),
         child: ClipRRect(
             child: MyBottomNavBar(
                   onTabChange:(index)=> navigateBottomBar(index)

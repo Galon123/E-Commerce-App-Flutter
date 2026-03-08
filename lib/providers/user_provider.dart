@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:e_commerce_app/models/bid.dart';
 import 'package:e_commerce_app/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce_app/services/api_client.dart';
@@ -20,6 +23,17 @@ class UserProvider extends ChangeNotifier {
   List<Product> get allProducts => _allProducts;
   bool get isProductLoading => _isProductLoading;
   bool get hasMore => _hasMore;
+
+  // --- My Bids State ---
+  List<Bid> _allBids = [];
+  int _bidskip = 0;
+  final int _bidlimit = 10;
+  bool _isBidsLoading = false;
+  bool _hasMoreBids = false;
+
+  List<Bid> get allBids => _allBids;
+  bool get isBidsLoading => _isBidsLoading;
+  bool get hasMoreBids => _hasMoreBids;
 
   // --- Functions ---
 
@@ -60,6 +74,9 @@ class UserProvider extends ChangeNotifier {
           final List<Product> newItems = data.map((json) => Product.fromJson(json)).toList();
           _allProducts.addAll(newItems);
           _skip += _limit;
+          if(data.length < _limit){
+            _hasMore = false;
+          }
         }
       }
     } catch (e) {
@@ -68,6 +85,40 @@ class UserProvider extends ChangeNotifier {
       _hasMore = false;
     } finally {
       _isProductLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// Fetches the Users Bids
+  Future<void> fetchBids() async{
+
+    if(_isBidsLoading || !hasMoreBids) return;
+
+    _isBidsLoading = true;
+    notifyListeners();
+
+    try{
+      final response = await ApiClient.dio.get('/bids/mybids?skip=$_bidskip&limit=$_bidlimit');
+
+      if(response.statusCode == 200){
+        final List<dynamic> data = response.data;
+
+        if(data.isEmpty){
+          _hasMoreBids = false;
+        } else{
+          final List<Bid> newBids = data.map((json)=> Bid.fromJson(json)).toList();
+          _allBids.addAll(newBids);
+          _bidskip += _bidlimit;
+          if(data.length < _bidlimit){
+            _hasMoreBids = false;
+          }
+        }
+      }
+    } catch(e){
+      debugPrint("Error fetching Bids: $e");
+      _hasMoreBids = false;
+    } finally{
+      _isBidsLoading = false;
       notifyListeners();
     }
   }
@@ -84,5 +135,19 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
 
     await fetchItems();
+  }
+
+  /// Resets the My Bids with Pull-to-Refresh
+  Future<void> refreshBids() async {
+
+    _isBidsLoading = false;
+
+    _allBids = [];
+    _bidskip = 0;
+    _hasMoreBids = true;
+
+    notifyListeners();
+
+    await fetchBids();
   }
 }

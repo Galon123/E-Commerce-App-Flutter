@@ -1,7 +1,8 @@
 import 'package:e_commerce_app/assets/constants.dart';
 import 'package:e_commerce_app/models/bid.dart';
-import 'package:e_commerce_app/services/api_client.dart';
+import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyBids extends StatefulWidget {
   const MyBids({super.key});
@@ -14,91 +15,51 @@ class _MyBidsState extends State<MyBids> {
 
   final ScrollController _scrollController = ScrollController();
 
-  bool isLoading=false;
-  bool _hasMore = true;
-  int _skip = 0;
-  final int _limit = 10;
-
-
-  List<Bid> myBids=[];
-
-
   @override
   void initState(){
     super.initState();
-    _fetchMyBids();
+
+    final provider = Provider.of<UserProvider>(context, listen: false);
+    if(provider.allBids.isEmpty){
+      provider.fetchBids();
+    }
 
     _scrollController.addListener((){
       if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200){
-        _fetchMyBids();
+        provider.fetchBids();
       }
     });
   }
 
-
-
-  Future <void> _fetchMyBids() async{
-
-    if(isLoading || !_hasMore) return;
-
-    setState(() => isLoading=true);
-
-    try{
-      final response = await ApiClient.dio.get("/bids/mybids?skip=$_skip&limit=$_limit");
-
-      if(response.statusCode == 404){
-        setState(() {
-          isLoading = false;
-          _hasMore = false;
-        });
-      }
-
-      final List<dynamic> data = response.data;
-
-      final List<Bid> newBids = data.map((json)=>Bid.fromJson(json)).toList();
-
-      setState(() {
-        _skip += _limit;
-
-        myBids.addAll(newBids);
-        isLoading = false;
-
-        if(newBids.isEmpty){
-          _hasMore = false;
-        }
-      });
-    }
-    catch(e){
-      debugPrint("Error Fetching Bids : $e");
-    }
-  }
-
-
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(title: const Text("My Bids", style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
+            color: Colors.white
           ),
         ),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.secondaryColor,
       ),
-      body: Container(
-        color: AppColors.backgroundColor,
+      body: RefreshIndicator(
+        onRefresh: () => provider.refreshBids(),
         child: CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           slivers: [
             SliverPadding(
               padding: EdgeInsets.all(8.0),
               sliver: SliverGrid(
                 delegate:SliverChildBuilderDelegate(
-                  (context,index) => _buildBidCard(myBids[index]),
-                  childCount: myBids.length
+                  (context,index) => _buildBidCard(provider.allBids[index]),
+                  childCount: provider.allBids.length
                 ), 
                 gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
-                  childAspectRatio: 1.44,
+                  childAspectRatio: 2.88,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10
                 )
@@ -108,7 +69,7 @@ class _MyBidsState extends State<MyBids> {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 24),
               alignment: Alignment.center,
-              child: _hasMore
+              child: provider.hasMoreBids
                   ? const CircularProgressIndicator() // Still loading
                   : const Column(
                       children: [
@@ -131,51 +92,16 @@ class _MyBidsState extends State<MyBids> {
 
 
   Widget _buildBidCard(Bid bid){
-    return SizedBox(
-      height: 50,
-      width: double.infinity, 
-      child: (
-        Card(
+    return(
+      Container(
+        width: double.infinity,
+        height: 20,
+        decoration: BoxDecoration(
           color: AppColors.secondaryColor,
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(15),
-          side: BorderSide(
-            color: Colors.black,
-            width: 2
-          )
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('Bid Status : ${bid.status}',style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  
-                ),),
-                Text('Your Bid Price : Rs.${bid.bidPrice}',style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  
-                ),),
-                Row(
-                  children: [
-                    Text('Seller Rating : ${bid.rating}',style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                  
-                ),),
-                    Icon(Icons.star)
-                  ],
-                )
-              ],
-            ),
-          ),
-        )
-      ),
+          borderRadius: BorderRadius.circular(15.0),
+          border: Border.all(width: 3)
+        ),
+      )
     );
   }
 

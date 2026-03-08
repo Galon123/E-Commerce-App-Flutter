@@ -43,8 +43,8 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text("Feed", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.primaryColor,
+        title: const Text("Feed", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
+        backgroundColor: AppColors.secondaryColor,
       ),
       body: RefreshIndicator(
         onRefresh: () async{ await provider.refreshFeed(); },
@@ -98,7 +98,7 @@ class _FeedScreenState extends State<FeedScreen> {
     }
 
     return Card(
-      color: const Color(0xFFD1C066),
+      color: Colors.deepOrange.shade100,
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),
@@ -144,6 +144,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             style: TextStyle(
                             fontWeight: FontWeight.bold, 
                             fontSize: 25,
+                            color: Colors.green.shade400
                           ),
                         ),
                         Row(
@@ -154,7 +155,8 @@ class _FeedScreenState extends State<FeedScreen> {
                               'By ${product.sellerName}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15
+                                fontSize: 15,
+                                color: Colors.green.shade400
                               ),
                             )
                           ],
