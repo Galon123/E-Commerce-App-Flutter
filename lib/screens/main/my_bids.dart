@@ -98,8 +98,44 @@ class _MyBidsState extends State<MyBids> {
         height: 20,
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(25.0),
           border: Border.all(width: 3)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text("Bid Status : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),),
+                      Text(bid.status, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("Bid Price : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),),
+                      Text("Rs.${bid.bidPrice}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("Seller Rating : ${bid.rating}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),),
+                      Icon(Icons.star)
+                    ],
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: ()=>{Provider.of<UserProvider>(context, listen:false).deleteBid(bid.id)}, 
+                child: Icon(Icons.delete)
+              )
+            ],
+          ),
         ),
       )
     );

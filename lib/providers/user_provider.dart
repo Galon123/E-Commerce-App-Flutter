@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:e_commerce_app/models/bid.dart';
 import 'package:e_commerce_app/models/product.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +115,29 @@ class UserProvider extends ChangeNotifier {
     } catch(e){
       debugPrint("Error fetching Bids: $e");
       _hasMoreBids = false;
+    } finally{
+      _isBidsLoading = false;
+      notifyListeners();
+    }
+  }
+
+  ///Deletes a Bid
+  Future<void> deleteBid(int id) async {
+
+    if(isBidsLoading) return;
+
+    _isBidsLoading = true;
+    notifyListeners();
+
+    try{
+      final response = await ApiClient.dio.delete('/bids/${id}');
+
+      if(response.statusCode == 200){
+        _isBidsLoading = false;
+        await refreshBids();
+      }
+    } catch(e) {
+      debugPrint("Error Deleting item no ${id} due to error: ${e}");
     } finally{
       _isBidsLoading = false;
       notifyListeners();
