@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
 

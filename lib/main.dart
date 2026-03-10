@@ -20,25 +20,27 @@ void main() async{
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider())
       ],
-      child: MarketplaceApp(isLoggedIn: sessionExists),
+      child: MarketplaceApp(),
     )
   );
 }
 
 class MarketplaceApp extends StatelessWidget {
 
-  final bool isLoggedIn;
-  const MarketplaceApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
+
+    final userProvider = context.watch<UserProvider>();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      initialRoute: isLoggedIn? '/home' :'/login',
+      home: userProvider.username == "Guest"
+      ? const LoginScreen() 
+      : const MainNavigationHub(),
       routes: {
         '/register' : (context) => const RegisterScreen(),
         '/login' : (context) => const LoginScreen(),

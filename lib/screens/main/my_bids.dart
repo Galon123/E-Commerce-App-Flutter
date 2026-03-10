@@ -130,10 +130,6 @@ class _MyBidsState extends State<MyBids> {
                   ),
                 ],
               ),
-              ElevatedButton(
-                onPressed: ()=>{Provider.of<UserProvider>(context, listen:false).deleteBid(bid.id)}, 
-                child: Icon(Icons.delete)
-              )
             ],
           ),
         ),

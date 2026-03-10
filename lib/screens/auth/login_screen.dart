@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,25 +25,44 @@ Future<void> _login() async {
 
     setState(() => _isLoading = true);
 
-    try {
-      // 2. Send request to FastAPI
-      // Syntax: data is the body of your POST request
-      final response = await ApiClient.dio.post('/login', 
-      data: FormData.fromMap({
-        "username": _usernameController.text,
-        "password": _passwordController.text,
-      }));
+    try{
 
-     if (response.statusCode == 200) {
-      Navigator.pushReplacementNamed(context, '/home');
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      final bool success = await userProvider.login(
+        _usernameController.text, 
+        _passwordController.text
+      );
+
+      if(!mounted) return;
+
+      if(success){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Welcome.......")
+          )
+        );
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Incorrect Password or username")
+          )  
+        );
+      } 
+    } catch(e){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Connection Error. Check Backend.......")
+          )  
+        );
+      }
+    finally{
+      if(mounted){
+        setState(() => _isLoading = false);
+        debugPrint("Spinner Stopped");
+      }
     }
-    } catch (e) {
-       ScaffoldMessenger.of(context).showSnackBar(
-         const SnackBar(content: Text("Login Failed")),
-       );
-  } finally {
-    if (mounted) setState(() => _isLoading = false);
-  }
   }  
 
 @override

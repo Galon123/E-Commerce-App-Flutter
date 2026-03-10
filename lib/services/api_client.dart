@@ -17,6 +17,8 @@ class ApiClient {
 
   static late PersistCookieJar _cookieJar;
 
+  static PersistCookieJar get cookieJar => _cookieJar;
+
   static Future<void> setup() async {
     // 1. Initialize Path & CookieJar
     final appDocDir = await getApplicationDocumentsDirectory();

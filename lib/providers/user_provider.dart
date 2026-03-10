@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:e_commerce_app/main.dart';
 import 'package:e_commerce_app/models/bid.dart';
 import 'package:e_commerce_app/models/product.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +29,75 @@ class UserProvider extends ChangeNotifier {
   int _bidskip = 0;
   final int _bidlimit = 10;
   bool _isBidsLoading = false;
-  bool _hasMoreBids = false;
+  bool _hasMoreBids = true;
 
   List<Bid> get allBids => _allBids;
   bool get isBidsLoading => _isBidsLoading;
   bool get hasMoreBids => _hasMoreBids;
 
   // --- Functions ---
+
+  ///Constructor
+  UserProvider({bool initialLoginState = false}){
+    if(initialLoginState){
+      refreshUsername();
+    }  
+  }
+
+  ///Login Function
+  Future<bool> login(String username, String password) async {
+    try {
+      final response = await ApiClient.dio.post('/login',
+        data: FormData.fromMap({
+          "username" : username,
+          "password" : password
+        })
+      );
+
+      if (response.statusCode == 200) {
+        _username = username;
+        notifyListeners();
+        return true; // Now this will actually reach the LoginScreen
+      }
+      return false;
+    } on DioException catch (e) {
+      debugPrint("Login Failed due to DioError: ${e.message}");
+      return false;
+    } catch (e) {
+      debugPrint("General Login Error: $e");
+      return false;
+    }
+  }
+
+  ///Clears the session cookies
+  void clearSession() {
+
+    _username = "Guest";
+    _allProducts=[];
+    _allBids=[];
+    
+    _hasMore = false;
+    _hasMoreBids = false;
+
+    ApiClient.cookieJar.deleteAll();
+
+    notifyListeners();
+  }
+
+  ///Logout Function
+  Future<void> logout() async{
+
+    try{
+
+      await ApiClient.dio.post('/logout');
+
+    } catch(e){
+      debugPrint("Error Logiing out : $e");
+    }
+    finally{
+      clearSession();
+    }
+  }
 
   /// Fetches the username for the current session
   Future<void> refreshUsername() async {
@@ -121,28 +185,6 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  ///Deletes a Bid
-  Future<void> deleteBid(int id) async {
-
-    if(isBidsLoading) return;
-
-    _isBidsLoading = true;
-    notifyListeners();
-
-    try{
-      final response = await ApiClient.dio.delete('/bids/${id}');
-
-      if(response.statusCode == 200){
-        _isBidsLoading = false;
-        await refreshBids();
-      }
-    } catch(e) {
-      debugPrint("Error Deleting item no ${id} due to error: ${e}");
-    } finally{
-      _isBidsLoading = false;
-      notifyListeners();
-    }
-  }
 
   /// Resets the feed and fetches from the beginning (for Pull-to-Refresh)
   Future<void> refreshFeed() async {

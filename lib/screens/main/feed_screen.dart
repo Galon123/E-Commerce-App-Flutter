@@ -45,6 +45,7 @@ class _FeedScreenState extends State<FeedScreen> {
       appBar: AppBar(
         title: const Text("Feed", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: AppColors.secondaryColor,
+        leading: ElevatedButton(onPressed: ()async=>{await Provider.of<UserProvider>(context, listen: false).logout()}, child: Text("Logout", style: TextStyle(color: Colors.red),)),
       ),
       body: RefreshIndicator(
         onRefresh: () async{ await provider.refreshFeed(); },
