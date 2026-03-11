@@ -43,9 +43,13 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text("Feed", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
+        title: const Text("Feed", style: TextStyle(
+          fontSize: AppSizes.largeSize, 
+          fontWeight: FontWeight.bold, 
+          color: Colors.white
+        )
+        ),
         backgroundColor: AppColors.secondaryColor,
-        leading: ElevatedButton(onPressed: ()async=>{await Provider.of<UserProvider>(context, listen: false).logout()}, child: Text("Logout", style: TextStyle(color: Colors.red),)),
       ),
       body: RefreshIndicator(
         onRefresh: () async{ await provider.refreshFeed(); },
@@ -99,7 +103,7 @@ class _FeedScreenState extends State<FeedScreen> {
     }
 
     return Card(
-      color: Colors.deepOrange.shade100,
+      color: AppColors.cardColour,
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),
@@ -136,7 +140,7 @@ class _FeedScreenState extends State<FeedScreen> {
                 )
               },
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(2.0),
                 child:Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -144,7 +148,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           product.title,
                             style: TextStyle(
                             fontWeight: FontWeight.bold, 
-                            fontSize: 25,
+                            fontSize: AppSizes.largeSize,
                             color: Colors.green.shade400
                           ),
                         ),
@@ -156,7 +160,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               'By ${product.sellerName}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontSize: AppSizes.mediumSize,
                                 color: Colors.green.shade400
                               ),
                             )
@@ -166,7 +170,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           "₹${product.price}",
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
-                            fontSize: 18,
+                            fontSize: AppSizes.mediumSize,
                             fontStyle: FontStyle.italic,
                             color: Colors.green.shade600
                           ),

@@ -1,6 +1,8 @@
 import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/screens/auth/login_screen.dart';
 import 'package:e_commerce_app/screens/auth/register_screen.dart';
+import 'package:e_commerce_app/screens/main/my_bids.dart';
+import 'package:e_commerce_app/screens/main/my_listings.dart';
 import 'package:e_commerce_app/screens/main_hub.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,7 @@ void main() async{
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider())
+        ChangeNotifierProvider(create: (_) => UserProvider(initialLoginState: sessionExists))
       ],
       child: MarketplaceApp(),
     )
@@ -45,6 +47,8 @@ class MarketplaceApp extends StatelessWidget {
         '/register' : (context) => const RegisterScreen(),
         '/login' : (context) => const LoginScreen(),
         '/home' : (context) => const MainNavigationHub(),
+        '/my_bids' : (context) => const MyBids(),
+        'my_listings' : (context) => const MyListings()
       },
     );
   }

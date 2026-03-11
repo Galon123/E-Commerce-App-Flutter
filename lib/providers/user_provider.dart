@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app/main.dart';
 import 'package:e_commerce_app/models/bid.dart';
@@ -8,9 +10,14 @@ import 'package:e_commerce_app/services/api_client.dart';
 class UserProvider extends ChangeNotifier {
   // --- User Info State ---
   String _username = "Guest";
+  String _email = "";
+  double _rating = 0.0;
+
   bool _isUserLoading = false;
 
   String get username => _username;
+  String get email => _email;
+  double get rating => _rating;
   bool get isUserLoading => _isUserLoading;
 
   // --- Product Feed State ---
@@ -60,7 +67,7 @@ class UserProvider extends ChangeNotifier {
         try {
           await refreshUsername(); 
         } catch (e) {
-          debugPrint("Backend /username route missing, using manual name.");
+          debugPrint("Check Backend");
         }
 
         notifyListeners();
@@ -121,6 +128,8 @@ class UserProvider extends ChangeNotifier {
       final response = await ApiClient.dio.get("/me");
       if (response.statusCode == 200) {
         _username = response.data['username'];
+        _email = response.data['email'];
+        _rating = response.data['rating'];
       }
     } catch (e) {
       debugPrint("Error fetching username: $e");

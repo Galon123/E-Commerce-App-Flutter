@@ -9,13 +9,13 @@ class MyBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: AppColors.secondaryColor, borderRadius: BorderRadius.circular(60), border: Border.all(width: 2)),
+      decoration: BoxDecoration(color: AppColors.secondaryColor, borderRadius: BorderRadius.circular(60), border: Border.all(width: 2),),
       child: GNav(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 35),
         color: Colors.lightGreen,
         activeColor: Colors.greenAccent,
         tabActiveBorder: Border.all(color: Colors.white),
-        tabBackgroundColor: Colors.deepPurple.shade400,
+        tabBackgroundColor: Color.fromARGB(255, 30, 73, 126),
         tabBorderRadius: 40,
         onTabChange: (value) => onTabChange!(value),
         tabs: const [

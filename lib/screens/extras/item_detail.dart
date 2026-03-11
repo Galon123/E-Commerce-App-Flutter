@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/assets/constants.dart';
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/services/api_client.dart';
@@ -120,7 +121,11 @@ class _ItemDetailState extends State<ItemDetail> {
     final bool isOwner = product.sellerName == userName;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Item detail"),),
+      backgroundColor: AppColors.backgroundColor,
+      appBar: AppBar(
+        title: Text("Item detail"),
+        backgroundColor: Colors.transparent,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -138,7 +143,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   Text(
                     "₹${widget.product.price}",
                     style: const TextStyle(
-                      fontSize: 28, 
+                      fontSize: AppSizes.mediumSize, 
                       fontWeight: FontWeight.bold, 
                       color: Colors.green
                     ),
@@ -146,7 +151,10 @@ class _ItemDetailState extends State<ItemDetail> {
                   const SizedBox(height: 8),
                   Text(
                     widget.product.title,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                      fontSize: AppSizes.largeSize, 
+                      fontWeight: FontWeight.w500
+                    ),
                   ),
                   const Divider(height: 30),
 
@@ -156,7 +164,10 @@ class _ItemDetailState extends State<ItemDetail> {
                       const CircleAvatar(child: Icon(Icons.person)),
                       const SizedBox(width: 10),
                       Text("Listed by ${widget.product.sellerName}", 
-                           style: const TextStyle(fontSize: 16)),
+                           style: const TextStyle(
+                            fontSize: AppSizes.mediumSize,
+                            fontWeight: FontWeight.bold
+                          )),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -164,7 +175,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   // 4. Description
                   const Text(
                     "Description",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: AppSizes.mediumSize, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(

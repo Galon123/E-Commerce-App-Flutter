@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/assets/constants.dart';
 import 'package:flutter/material.dart';
 
 class MyListings extends StatelessWidget {
@@ -6,11 +7,14 @@ class MyListings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(title: const Text("My Listings", style: TextStyle(
             fontSize: 40,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
           ),
         ),
+        backgroundColor: AppColors.secondaryColor,
+        foregroundColor: Colors.white
       ),
     );
   }

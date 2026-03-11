@@ -92,6 +92,7 @@ class _MyBidsState extends State<MyBids> {
 
 
   Widget _buildBidCard(Bid bid){
+    final provider = Provider.of<UserProvider>(context);
     return(
       Container(
         width: double.infinity,
@@ -112,24 +113,30 @@ class _MyBidsState extends State<MyBids> {
                 children: [
                   Row(
                     children: [
-                      Text("Bid Status : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),),
-                      Text(bid.status, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),)
+                      Text("Bid Status : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.textColour),),
+                      Text(bid.status, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: const Color.fromARGB(255, 166, 243, 192)),)
                     ],
                   ),
                   Row(
                     children: [
-                      Text("Bid Price : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),),
-                      Text("Rs.${bid.bidPrice}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),)
+                      Text("Bid Price : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.textColour),),
+                      Text("Rs.${bid.bidPrice}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: const Color.fromARGB(255, 170, 243, 195)),)
                     ],
                   ),
                   Row(
                     children: [
-                      Text("Seller Rating : ${bid.rating}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),),
-                      Icon(Icons.star)
+                      Text("Seller Rating : ${bid.rating}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.textColour),),
+                      Icon(Icons.star, color: AppColors.textColour,)
                     ],
                   ),
                 ],
               ),
+              IconButton(
+                onPressed: () => {}, 
+                icon: Icon(Icons.delete_rounded),
+                color: Colors.red,
+                iconSize: AppSizes.largeSize,
+              )
             ],
           ),
         ),
