@@ -22,8 +22,7 @@ class ApiClient {
   static Future<void> setup() async {
     // 1. Initialize Path & CookieJar
     final appDocDir = await getApplicationDocumentsDirectory();
-    final String path = "${appDocDir.path}/.cookies/";
-    _cookieJar = PersistCookieJar(storage: FileStorage(path));
+    _cookieJar = PersistCookieJar(storage: FileStorage(appDocDir.path));
 
     // 2. INTERCEPTOR 1: The Cleaner (Must be first!)
     // This removes the "Bearer " prefix from the backend cookie before CookieManager sees it

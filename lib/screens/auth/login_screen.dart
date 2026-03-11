@@ -42,6 +42,7 @@ Future<void> _login() async {
             content: Text("Welcome.......")
           )
         );
+        await userProvider.refreshUsername();
       }
       else{
         ScaffoldMessenger.of(context).showSnackBar(

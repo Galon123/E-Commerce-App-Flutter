@@ -43,6 +43,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ); 
 
         if(regRequest.statusCode == 201 || regRequest.statusCode == 200){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("User Registered Successfully. Please Login"))
+          );
           Navigator.pushReplacementNamed(context, '/login');
         }
       }

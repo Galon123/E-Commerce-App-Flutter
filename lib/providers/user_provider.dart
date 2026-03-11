@@ -55,9 +55,16 @@ class UserProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        _username = username;
+        _username = username; // Backup: Set it manually first
+        
+        try {
+          await refreshUsername(); 
+        } catch (e) {
+          debugPrint("Backend /username route missing, using manual name.");
+        }
+
         notifyListeners();
-        return true; // Now this will actually reach the LoginScreen
+        return true; 
       }
       return false;
     } on DioException catch (e) {
@@ -76,8 +83,11 @@ class UserProvider extends ChangeNotifier {
     _allProducts=[];
     _allBids=[];
     
-    _hasMore = false;
-    _hasMoreBids = false;
+    _hasMore = true;
+    _hasMoreBids = true;
+
+    _skip = 0;
+    _bidskip = 0;
 
     ApiClient.cookieJar.deleteAll();
 
@@ -104,7 +114,11 @@ class UserProvider extends ChangeNotifier {
     _isUserLoading = true;
     notifyListeners();
     try {
-      final response = await ApiClient.dio.get("/username");
+
+      final cookies = await ApiClient.cookieJar.loadForRequest(Uri.parse("http://127.0.0.1:8000/username"));
+      debugPrint("DEBUG: Sending cookies: $cookies");
+
+      final response = await ApiClient.dio.get("/me");
       if (response.statusCode == 200) {
         _username = response.data['username'];
       }
