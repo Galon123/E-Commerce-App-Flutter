@@ -143,7 +143,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   Text(
                     "₹${widget.product.price}",
                     style: const TextStyle(
-                      fontSize: AppSizes.mediumSize, 
+                      fontSize: AppSizes.fontSize3, 
                       fontWeight: FontWeight.bold, 
                       color: Colors.green
                     ),
@@ -152,7 +152,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   Text(
                     widget.product.title,
                     style: const TextStyle(
-                      fontSize: AppSizes.largeSize, 
+                      fontSize: AppSizes.fontSize5, 
                       fontWeight: FontWeight.w500
                     ),
                   ),
@@ -165,7 +165,7 @@ class _ItemDetailState extends State<ItemDetail> {
                       const SizedBox(width: 10),
                       Text("Listed by ${widget.product.sellerName}", 
                            style: const TextStyle(
-                            fontSize: AppSizes.mediumSize,
+                            fontSize: AppSizes.fontSize3,
                             fontWeight: FontWeight.bold
                           )),
                     ],
@@ -175,7 +175,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   // 4. Description
                   const Text(
                     "Description",
-                    style: TextStyle(fontSize: AppSizes.mediumSize, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: AppSizes.fontSize3, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(

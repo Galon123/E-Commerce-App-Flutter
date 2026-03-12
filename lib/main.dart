@@ -48,7 +48,7 @@ class MarketplaceApp extends StatelessWidget {
         '/login' : (context) => const LoginScreen(),
         '/home' : (context) => const MainNavigationHub(),
         '/my_bids' : (context) => const MyBids(),
-        'my_listings' : (context) => const MyListings()
+        '/my_listings' : (context) => const MyListings()
       },
     );
   }

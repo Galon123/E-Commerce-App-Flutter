@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:e_commerce_app/main.dart';
 import 'package:e_commerce_app/models/bid.dart';
 import 'package:e_commerce_app/models/product.dart';
+import 'package:e_commerce_app/screens/auth/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 
@@ -62,13 +63,13 @@ class UserProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
+
+        _allProducts = [];
+        _hasMore = true;
+
         _username = username; // Backup: Set it manually first
         
-        try {
-          await refreshUsername(); 
-        } catch (e) {
-          debugPrint("Check Backend");
-        }
+        await refreshUsername();
 
         notifyListeners();
         return true; 
@@ -80,6 +81,30 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint("General Login Error: $e");
       return false;
+    }
+  }
+
+  Future<void> register(String username, String email, String phoneno, String password, String confirmPassword, BuildContext context) async{
+
+    try{
+
+      final response = await ApiClient.dio.post('/register', data: {
+        "username" : username,
+        "email" : email,
+        "phone_no" : phoneno,
+        "password" : password,
+        "confirm_password" : confirmPassword
+      });
+
+      if(response.statusCode == 200 || response.statusCode == 201){
+       ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("User Registered Successfully......"))
+       );
+        Navigator.pushReplacementNamed(context, '/login');
+
+      }
+    } catch (e){
+      debugPrint("Error Registering");
     }
   }
 

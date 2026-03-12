@@ -38,11 +38,12 @@ class _MyBidsState extends State<MyBids> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(title: const Text("My Bids", style: TextStyle(
             fontSize: 40,
-            fontWeight: FontWeight.bold,
-            color: Colors.white
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w900,
+            color: AppColors.primaryColor
           ),
         ),
-        backgroundColor: AppColors.secondaryColor,
+        backgroundColor: Colors.transparent,
       ),
       body: RefreshIndicator(
         onRefresh: () => provider.refreshBids(),
@@ -59,7 +60,7 @@ class _MyBidsState extends State<MyBids> {
                 ), 
                 gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
-                  childAspectRatio: 2.88,
+                  childAspectRatio: 4,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10
                 )
@@ -96,8 +97,13 @@ class _MyBidsState extends State<MyBids> {
     return(
       Container(
         width: double.infinity,
-        height: 20,
+        height: 10,
         decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColors.secondaryColor, AppColors.primaryColor],
+            begin: AlignmentGeometry.topCenter,
+            end: AlignmentGeometry.bottomCenter
+          ),
           color: AppColors.secondaryColor,
           borderRadius: BorderRadius.circular(25.0),
           border: Border.all(width: 3)
@@ -113,19 +119,19 @@ class _MyBidsState extends State<MyBids> {
                 children: [
                   Row(
                     children: [
-                      Text("Bid Status : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.textColour),),
-                      Text(bid.status, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: const Color.fromARGB(255, 166, 243, 192)),)
+                      Text("Bid Status : ", style: TextStyle(fontSize: AppSizes.fontSize2, fontWeight: FontWeight.w700, color: AppColors.textColour),),
+                      Text(bid.status, style: TextStyle(fontSize: AppSizes.fontSize2, fontWeight: FontWeight.w700, color: const Color.fromARGB(255, 166, 243, 192)),)
                     ],
                   ),
                   Row(
                     children: [
-                      Text("Bid Price : ", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.textColour),),
-                      Text("Rs.${bid.bidPrice}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: const Color.fromARGB(255, 170, 243, 195)),)
+                      Text("Bid Price : ", style: TextStyle(fontSize: AppSizes.fontSize2, fontWeight: FontWeight.w700, color: AppColors.textColour),),
+                      Text("Rs.${bid.bidPrice}", style: TextStyle(fontSize: AppSizes.fontSize2, fontWeight: FontWeight.w700, color: const Color.fromARGB(255, 170, 243, 195)),)
                     ],
                   ),
                   Row(
                     children: [
-                      Text("Seller Rating : ${bid.rating}", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.textColour),),
+                      Text("Seller Rating : ${bid.rating}", style: TextStyle(fontSize: AppSizes.fontSize2, fontWeight: FontWeight.w700, color: AppColors.textColour),),
                       Icon(Icons.star, color: AppColors.textColour,)
                     ],
                   ),
@@ -135,7 +141,7 @@ class _MyBidsState extends State<MyBids> {
                 onPressed: () => {}, 
                 icon: Icon(Icons.delete_rounded),
                 color: Colors.red,
-                iconSize: AppSizes.largeSize,
+                iconSize: AppSizes.fontSize5,
               )
             ],
           ),

@@ -10,11 +10,12 @@ class MyListings extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(title: const Text("My Listings", style: TextStyle(
             fontSize: 40,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
+            fontStyle: FontStyle.italic
           ),
         ),
-        backgroundColor: AppColors.secondaryColor,
-        foregroundColor: Colors.white
+        backgroundColor: Colors.transparent,
+        foregroundColor: AppColors.primaryColor
       ),
     );
   }

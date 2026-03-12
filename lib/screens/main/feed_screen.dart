@@ -44,53 +44,62 @@ class _FeedScreenState extends State<FeedScreen> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: const Text("Feed", style: TextStyle(
-          fontSize: AppSizes.largeSize, 
-          fontWeight: FontWeight.bold, 
-          color: Colors.white
+          fontSize: AppSizes.fontSize5, 
+          fontWeight: FontWeight.w900, 
+          color: AppColors.primaryColor
         )
         ),
-        backgroundColor: AppColors.secondaryColor,
+        backgroundColor: Colors.transparent,
       ),
-      body: RefreshIndicator(
-        onRefresh: () async{ await provider.refreshFeed(); },
-          child: CustomScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.all(12.0),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    childAspectRatio: 0.72,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => _buildProductCard(provider.allProducts[index]),
-                    childCount: provider.allProducts.length,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColors.backgroundColor, AppColors.backgroundColor1],
+            begin: AlignmentGeometry.topCenter,
+            end: AlignmentGeometry.bottomCenter
+          )
+        ),
+        child: RefreshIndicator(
+          onRefresh: () async{ await provider.refreshFeed(); },
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: _scrollController,
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.all(12.0),
+                  sliver: SliverGrid(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      childAspectRatio: 0.72,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => _buildProductCard(provider.allProducts[index]),
+                      childCount: provider.allProducts.length,
+                    ),
                   ),
                 ),
-              ),
-              
-              // Bottom Loader/Status
-              SliverToBoxAdapter(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  alignment: Alignment.center,
-                  child: provider.hasMore
-                      ? const CircularProgressIndicator()
-                      : const Column(
-                          children: [
-                            Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
-                            SizedBox(height: 8),
-                            Text("You're all caught up!", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
-                          ],
-                        ),
+                
+                // Bottom Loader/Status
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    alignment: Alignment.center,
+                    child: provider.hasMore
+                        ? const CircularProgressIndicator()
+                        : const Column(
+                            children: [
+                              Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
+                              SizedBox(height: 8),
+                              Text("You're all caught up!", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+                            ],
+                          ),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+        ),
       ),
     );
   }
@@ -148,7 +157,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           product.title,
                             style: TextStyle(
                             fontWeight: FontWeight.bold, 
-                            fontSize: AppSizes.largeSize,
+                            fontSize: AppSizes.fontSize4,
                             color: Colors.green.shade400
                           ),
                         ),
@@ -160,7 +169,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               'By ${product.sellerName}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: AppSizes.mediumSize,
+                                fontSize: AppSizes.fontSize2,
                                 color: Colors.green.shade400
                               ),
                             )
@@ -170,7 +179,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           "₹${product.price}",
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
-                            fontSize: AppSizes.mediumSize,
+                            fontSize: AppSizes.fontSize2,
                             fontStyle: FontStyle.italic,
                             color: Colors.green.shade600
                           ),

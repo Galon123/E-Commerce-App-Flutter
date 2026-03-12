@@ -11,6 +11,11 @@ class MyBottomNavBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(color: AppColors.secondaryColor, borderRadius: BorderRadius.circular(60), border: Border.all(width: 2),),
       child: GNav(
+        tabBackgroundGradient: LinearGradient(
+          colors: [AppColors.secondaryColor, AppColors.primaryColor],
+          begin: AlignmentGeometry.topCenter,
+          end: AlignmentGeometry.bottomCenter
+        ),
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 35),
         color: Colors.lightGreen,
         activeColor: Colors.greenAccent,

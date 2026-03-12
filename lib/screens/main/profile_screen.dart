@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text("My Profile", style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.largeSize)),
+        title: const Text("My Profile", style: TextStyle(fontWeight: FontWeight.w900, fontStyle: FontStyle.italic,fontSize: AppSizes.fontSize5)),
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.primaryColor,
@@ -37,9 +37,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
             ),
             const SizedBox(height: 15),
-            Text(
-              userProvider.username,
-              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  userProvider.username,
+                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.indigo),
+                ),
+                Icon(Icons.verified, color: Colors.indigo,)
+              ],
             ),
             const Text(
               "Verified Student",
@@ -56,13 +62,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.gavel_rounded,
               title: "My Bids",
               subtitle: "Check the status of your offers",
-              onTap: () => Navigator.pushReplacementNamed(context, '/my_bids'),
+              onTap: () => Navigator.pushNamed(context, '/my_bids'),
             ),
             _buildMenuItem(
               icon: Icons.inventory_2_outlined,
               title: "My Listings",
               subtitle: "Manage the items you're selling",
-              onTap: () => Navigator.pushReplacementNamed(context, '/my_listings'),
+              onTap: () => Navigator.pushNamed(context, '/my_listings'),
             ),
 
             const SizedBox(height: 20),
@@ -120,6 +126,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppColors.primaryColor, AppColors.secondaryColor],
+          begin: AlignmentGeometry.bottomCenter,
+          end: AlignmentGeometry.topCenter
+        ),
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [

@@ -1,5 +1,7 @@
+import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/services/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
 
@@ -28,35 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     //Validation
     if(!_formkey.currentState!.validate()) return;
 
+    await Provider.of<UserProvider>(context, listen: false).register(_usernameController.text.trim(), _emailController.text, _phoneNoController.text, _passwordController.text, _confirmPasswordController.text, context);
 
-
-    try{
-
-        final regRequest = await ApiClient.dio.post('/register',
-        data: {
-          "username" : _usernameController.text.trim(),
-          "email" : _emailController.text,
-          "phone_no" : _phoneNoController.text,
-          "password" : _passwordController.text,
-          "confirm_password" : _confirmPasswordController.text,
-          }
-        ); 
-
-        if(regRequest.statusCode == 201 || regRequest.statusCode == 200){
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("User Registered Successfully. Please Login"))
-          );
-          Navigator.pushReplacementNamed(context, '/login');
-        }
-      }
-    catch(e){
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Register Failed"))
-      );
-    }
-    finally{
-      setState(() => _isLoading = false);
-    }
+    setState(() => _isLoading = false);
 
   }
 
